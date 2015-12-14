@@ -35,5 +35,8 @@
   , "CIFS"
   , "Samba"
   ]
-
+,
+  "scripts": {
+    "build": "babel --source-maps --out-dir=lib/api/ lib/api/src"
+  }
 }
