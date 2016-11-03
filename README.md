@@ -1,6 +1,6 @@
-# SMB2 Client for Node.js
+# @marsaud/smb2 [![Build Status](https://travis-ci.org/Node-SMB/marsaud-smb2.png?branch=master)](https://travis-ci.org/Node-SMB/marsaud-smb2)
 
-[![NPM version](https://badge.fury.io/js/smb2.svg)](http://badge.fury.io/js/smb2) [![Dependency Status](https://david-dm.org/bchelli/node-smb2.svg?theme=shields.io)](https://david-dm.org/bchelli/node-smb2) [![Code Climate](https://codeclimate.com/github/bchelli/node-smb2.svg)](https://codeclimate.com/github/bchelli/node-smb2)
+> SMB2 Client for Node.js
 
 ## Introduction
 
@@ -8,10 +8,12 @@ This library is a simple implementation of SMB2 for Node.js. It allows you to ac
 
 The development is still at an experimental stage and should not be yet considered for production environment.
 
-## Installation
+## Install
 
-```bash
-npm install -S smb2
+Installation of the [npm package](https://npmjs.org/package/@marsaud/smb2):
+
+```
+> npm install --save @marsaud/smb2
 ```
 
 ## API
@@ -27,12 +29,12 @@ the parameter ```options``` accepts this list of attributes:
 - ```password``` (mandatory): the password
 - ```port``` (optional): default ```445```, the port of the SMB server
 - ```packetConcurrency``` (optional): default ```20```, the number of simulatanous packet when writting / reading data from the share
-- ```autoCloseTimeout``` (optional): default ```10000```, the timeout in milliseconds before to close the SMB2 session and the socket, if setted to ```0``` the connection will never be closed unless you do it 
+- ```autoCloseTimeout``` (optional): default ```10000```, the timeout in milliseconds before to close the SMB2 session and the socket, if setted to ```0``` the connection will never be closed unless you do it
 
 Example:
 ```javascript
 // load the library
-var SMB2 = require('smb2');
+var SMB2 = require('@marsaud/smb2');
 
 // create an SMB2 instance
 var smb2Client = new SMB2({
@@ -167,6 +169,36 @@ smb2Client.createWriteStream('path\\to\\the\\file', function (err, readStream) {
 ```
 ### smb2Client.ensureDir ( path, callback )
 Ensures that the directory exists. If the directory structure does not exist, it is created.
+
+## Development
+
+```
+# Install dependencies
+> npm install
+
+# Run the tests
+> npm test
+
+# Continuously compile
+> npm run dev
+
+# Continuously run the tests
+> npm run dev-test
+
+# Build for production (automatically called by npm install)
+> npm run build
+```
+
+## Contributions
+
+Contributions are *very* welcomed, either on the documentation or on
+the code.
+
+You may:
+
+- report any [issue](https://github.com/Node-SMB/marsaud-smb2/issues)
+  you've encountered;
+- fork and create a pull request.
 
 ## Contributors
 - [Benjamin Chelli](https://github.com/bchelli)

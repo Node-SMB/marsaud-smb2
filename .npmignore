@@ -1,5 +1,10 @@
-src
-.*
-*.map
-test
-log
+/examples/
+example.js
+example.js.map
+*.example.js
+*.example.js.map
+
+/test/
+/tests/
+*.spec.js
+*.spec.js.map
