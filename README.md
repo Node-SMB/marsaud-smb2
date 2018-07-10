@@ -139,7 +139,7 @@ smb2Client.rename('path\\to\\my\\file.txt', 'new\\path\\to\\my\\new-file-name.tx
 });
 ```
 
-### smb2Client.close ( )
+### smb2Client.disconnect ( )
 This function will close the open connection if opened, it will be called automatically after ```autoCloseTimeout``` ms of no SMB2 call on the server.
 
 ### smb2Client.createReadStream ( fileName, [options], callback )
