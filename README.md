@@ -168,6 +168,29 @@ smb2Client.createWriteStream('path\\to\\the\\file', function (err, readStream) {
 ### smb2Client.ensureDir ( path, callback )
 Ensures that the directory exists. If the directory structure does not exist, it is created.
 
+### Low-level API
+
+```javascript
+smb2Client.open('path\\to\\the\\file', function (err, fd) {
+    if (err) throw err;
+
+    smb2Client.read(
+        Buffer.alloc(10), // buffer where to store the data
+        0,                // offset in the buffer
+        10,               // number of bytes to read
+        0,                // offset in the file
+        function (err, bytesRead, buffer) {
+            smb2Client.closeFile(fd, function () {})
+
+            if (err) throw cb(err)
+            console.log(bytesRead, buffer)
+        }
+    )
+})
+```
+
+This API is modeled after Node's `fs` module, except from `closeFile` because the name `close` was already taken to close the connection.
+
 ## Contributors
 - [Benjamin Chelli](https://github.com/bchelli)
 - [Fabrice Marsaud](https://github.com/marsaud)
