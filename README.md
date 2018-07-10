@@ -191,6 +191,8 @@ smb2Client.open('path\\to\\the\\file', function (err, fd) {
 
 > This API is modeled after Node's `fs` module.
 
+> Note: be careful of `autoCloseTimeout` with this process as it is not intended to cover multiple method calls, you should set it to `0` and manually `disconnect()`.
+
 ## Contributors
 - [Benjamin Chelli](https://github.com/bchelli)
 - [Fabrice Marsaud](https://github.com/marsaud)
