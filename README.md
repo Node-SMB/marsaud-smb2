@@ -180,7 +180,7 @@ smb2Client.open('path\\to\\the\\file', function (err, fd) {
         10,               // number of bytes to read
         0,                // offset in the file
         function (err, bytesRead, buffer) {
-            smb2Client.closeFile(fd, function () {})
+            smb2Client.close(fd, function () {})
 
             if (err) throw cb(err)
             console.log(bytesRead, buffer)
@@ -189,7 +189,7 @@ smb2Client.open('path\\to\\the\\file', function (err, fd) {
 })
 ```
 
-This API is modeled after Node's `fs` module, except from `closeFile` because the name `close` was already taken to close the connection.
+> This API is modeled after Node's `fs` module.
 
 ## Contributors
 - [Benjamin Chelli](https://github.com/bchelli)
