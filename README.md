@@ -184,7 +184,7 @@ smb2Client.rmdir('path\\to\\the\\directory', function(err) {
 
 > `smb2Client.unlink ( path, callback )`
 
-Asynchronous unlink(2): delete a file.
+Asynchronous `unlink(2)`: delete a file.
 
 ```javascript
 smb2Client.unlink('path\\to\\my\\file.txt', function(err) {
