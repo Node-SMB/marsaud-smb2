@@ -24,13 +24,13 @@ none is passed:
 ```js
 // Node-style callback
 smb2Client.readFile('foo.txt', function(err, content) {
-    if (err) throw err
-    console.log(content)
-})
+  if (err) throw err;
+  console.log(content);
+});
 
 // With promise, ideal with ES2017 async functions
-const content = await smb2Client.readFile('foo.txt')
-console.log(content)
+const content = await smb2Client.readFile('foo.txt');
+console.log(content);
 ```
 
 ### Construction
