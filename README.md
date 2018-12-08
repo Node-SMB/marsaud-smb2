@@ -254,10 +254,11 @@ smb2Client.createWriteStream('path\\to\\the\\file', function(err, readStream) {
 ### Low-level API
 
 ```javascript
-smb2Client.open('path\\to\\the\\file', function(err, fd) {
+smb2Client.open('path\\to\\the\\file', 'r', function(err, fd) {
   if (err) throw err;
 
   smb2Client.read(
+    fd, // file descriptor
     Buffer.alloc(10), // buffer where to store the data
     0, // offset in the buffer
     10, // number of bytes to read
@@ -267,6 +268,24 @@ smb2Client.open('path\\to\\the\\file', function(err, fd) {
 
       if (err) throw cb(err);
       console.log(bytesRead, buffer);
+    }
+  );
+});
+
+smb2Client.open('path\\to\\the\\file', 'w', function(err, fd) {
+  if (err) throw err;
+
+  smb2Client.write(
+    fd, // file descriptor
+    Buffer.from('foo bar\n'), // data to write to the file
+    0, // offset in the buffer
+    10, // number of bytes to write
+    0, // offset in the file
+    function(err, bytesWritten, buffer) {
+      smb2Client.close(fd, function() {});
+
+      if (err) throw cb(err);
+      console.log(bytesWritten);
     }
   );
 });

@@ -29,6 +29,22 @@ const tests = {
   unlink: function(client) {
     return client.unlink(file);
   },
+  'open new file and write': asyncFn(function*(client) {
+    const fd = yield client.open(file, 'w');
+    try {
+      try {
+        t.same(yield client.write(fd, data, undefined, undefined, 0), {
+          bytesWritten: data.length,
+          buffer: data,
+        });
+      } finally {
+        yield client.close(fd);
+      }
+      t.same(yield client.readFile(file), data);
+    } finally {
+      yield client.unlink(file);
+    }
+  }),
   rmdir: function(client) {
     return client.rmdir(dir);
   },
@@ -40,7 +56,6 @@ asyncFn(function*() {
   );
   options.autoCloseTimeout = 0;
   const client = new Smb2(options);
-
   try {
     let result;
     for (const name of Object.keys(tests)) {
