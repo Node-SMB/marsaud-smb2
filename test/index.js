@@ -1,5 +1,9 @@
 const asyncFn = require('promise-toolbox/asyncFn');
+const defer = require('golike-defer').default;
+const finished = require('readable-stream').finished;
+const fromCallback = require('promise-toolbox/fromCallback');
 const fs = require('fs');
+const getStream = require('get-stream');
 const path = require('path');
 const t = require('tap');
 const TOML = require('@iarna/toml');
@@ -45,6 +49,39 @@ const tests = {
       yield client.unlink(file);
     }
   }),
+  createReadStream: defer(
+    asyncFn(function*($d, client) {
+      yield client.writeFile(file, data);
+      $d.call(client, 'unlink', file);
+      const fd = yield client.open(file, 'r');
+      $d.call(client, 'close', fd);
+
+      t.same(
+        yield getStream.buffer(
+          yield client.createReadStream('', { autoClose: false, fd })
+        ),
+        data
+      );
+    })
+  ),
+  createWriteStream: defer(
+    asyncFn(function*($d, client) {
+      const fd = yield client.open(file, 'w');
+      $d.call(client, 'unlink', file);
+      $d.call(client, 'close', fd);
+
+      const stream = yield client.createWriteStream('', {
+        autoClose: false,
+        fd,
+      });
+      yield fromCallback(cb => {
+        finished(stream, cb);
+        stream.end(data);
+      });
+
+      t.same(yield client.readFile(file), data);
+    })
+  ),
   rmdir: function(client) {
     return client.rmdir(dir);
   },

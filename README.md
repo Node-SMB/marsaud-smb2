@@ -235,6 +235,14 @@ smb2Client.createReadStream('path\\to\\the\\file', function(err, readStream) {
 });
 ```
 
+Supported options:
+
+- `autoClose`: whether the `fd` should be closed at the end or on error, default `true`
+- `end`: offset in the file after which to stop reading, default `Infinity`
+- `fd`: if specified, the path will be ignored and this opened file will be used instead
+- `flags`: see [Node documentation](https://nodejs.org/dist/latest-v10.x/docs/api/fs.html#fs_file_system_flags), default `'r'`
+- `start`: offset in the file from which to start reading, default `0`
+
 > `smb2Client.createWriteStream ( fileName, [options], callback )`
 
 Returns a write stream on the file.
@@ -250,6 +258,13 @@ smb2Client.createWriteStream('path\\to\\the\\file', function(err, readStream) {
   readStream.pipe(writeStream);
 });
 ```
+
+Supported options:
+
+- `autoClose`: whether the `fd` should be closed at the end or on error, default `true`
+- `fd`: if specified, the path will be ignored and this opened file will be used instead
+- `flags`: see [Node documentation](https://nodejs.org/dist/latest-v10.x/docs/api/fs.html#fs_file_system_flags), default `'wx'`
+- `start`: offset in the file from which to start writing, default `0`
 
 ### Low-level API
 

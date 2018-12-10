@@ -20,7 +20,8 @@
     "url": "https://github.com/marsaud/node-smb2"
   },
   "dependencies": {
-    "ntlm": "~0.1.1"
+    "ntlm": "~0.1.1",
+    "readable-stream": "^3.0.6"
   },
   "keywords": [
     "SMB",
@@ -42,6 +43,8 @@
     "eslint-plugin-node": "^8.0.0",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
+    "get-stream": "^4.1.0",
+    "golike-defer": "^0.4.1",
     "husky": "^1.2.0",
     "lint-staged": "^8.1.0",
     "prettier": "^1.15.3",
