@@ -47,7 +47,7 @@ the parameter `options` accepts this list of attributes:
 - `password`: the password
 - `port` (optional): default `445`, the port of the SMB server
 - `packetConcurrency` (optional): default `20`, the number of simultaneous packet when writing / reading data from the share
-- `autoCloseTimeout` (optional): default `0`, the timeout in milliseconds before to close the SMB2 session and the socket, if set to `0` the connection will never be closed unless you do it
+- `autoCloseTimeout` (optional): default `10000`, the timeout in milliseconds before to close the SMB2 session and the socket, if set to `0` the connection will never be closed unless you do it
 
 Example:
 
