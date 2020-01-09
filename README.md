@@ -53,7 +53,7 @@ Example:
 
 ```javascript
 // load the library
-var SMB2 = require('smb2');
+var SMB2 = require("@marsaud/smb2");
 
 // create an SMB2 instance
 var smb2Client = new SMB2({
@@ -269,7 +269,7 @@ Returns a write stream on the file.
 Example:
 
 ```javascript
-smb2Client.createWriteStream('path\\to\\the\\file', function(err, readStream) {
+smb2Client.createWriteStream('path\\to\\the\\file', function(err, writeStream) {
   if (err) throw err;
   var readStream = fs.createReadStream('localFile');
   readStream.pipe(writeStream);
