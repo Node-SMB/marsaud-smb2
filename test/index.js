@@ -32,6 +32,18 @@ const tests = {
       t.same(result, data);
     });
   },
+  statFile: function(client) {
+    return client.stat(file).then(function(result) {
+      t.same(result.size, data.length);
+      t.same(result.isDirectory(), false);
+    });
+  },
+  statDir: function(client) {
+    return client.stat(dir).then(function(result) {
+      t.same(result.size, 0);
+      t.same(result.isDirectory(), true);
+    });
+  },
   unlink: function(client) {
     return client.unlink(file);
   },
