@@ -14,6 +14,7 @@ const Smb2 = require('../');
 
 const dir = 'smb2-tests-' + Date.now();
 const file = dir + '\\file.txt';
+const file2 = dir + '\\file2.txt';
 const data = Buffer.from(
   Array.from({ length: 1024 }, function() {
     return Math.floor(Math.random() * 256);
@@ -38,21 +39,90 @@ const tests = {
       t.same(result.isDirectory(), false);
     });
   },
+  getSize: function(client) {
+    return client.getSize(file).then(function(result) {
+      t.same(result, data.length);
+    });
+  },
+  exists: function(client) {
+    return client
+      .exists(file)
+      .then(function(result) {
+        t.same(result, true);
+        return client.exists(file2);
+      })
+      .then(function(result) {
+        t.same(result, false);
+      });
+  },
   statDir: function(client) {
     return client.stat(dir).then(function(result) {
       t.same(result.size, 0);
       t.same(result.isDirectory(), true);
     });
   },
+  readdir: function(client) {
+    return client.readdir(dir).then(function(result) {
+      t.same(result.length, 1);
+    });
+  },
+  readdirWithStats: function(client) {
+    return client.readdir(dir, { stats: true }).then(function(result) {
+      t.same(result.length, 1);
+      t.same(result[0].filename, 'file.txt');
+      t.same(result[0].size, data.length);
+      t.same(result[0].isDirectory(), false);
+    });
+  },
+  rename: function(client) {
+    return client
+      .rename(file, file2)
+      .then(function() {
+        return client.readdir(dir);
+      })
+      .then(function(result) {
+        t.same(result.length, 1);
+        t.same(result[0], 'file2.txt');
+      })
+      .then(function() {
+        return client.rename(file2, file);
+      })
+      .then(function() {
+        return client.readdir(dir);
+      })
+      .then(function(result) {
+        t.same(result.length, 1);
+        t.same(result[0], 'file.txt');
+      });
+  },
+  truncate: function(client) {
+    return client
+      .truncate(file, 10)
+      .then(function() {
+        return client.stat(file);
+      })
+      .then(function(result) {
+        t.same(result.size, 10);
+      });
+  },
   unlink: function(client) {
     return client.unlink(file);
   },
   'open new file and write': asyncFn(function*(client) {
-    const fd = yield client.open(file, 'w');
+    var fd = yield client.open(file, 'w');
+    try {
+      t.same(yield client.write(fd, data, undefined, undefined, 0), {
+        bytesWritten: data.length,
+        buffer: data,
+      });
+    } finally {
+      yield client.close(fd);
+    }
+    fd = yield client.open(file, 'r');
     try {
       try {
-        t.same(yield client.write(fd, data, undefined, undefined, 0), {
-          bytesWritten: data.length,
+        t.same(yield client.read(fd, Buffer.alloc(1024), 0, 1024, 0), {
+          bytesRead: data.length,
           buffer: data,
         });
       } finally {
