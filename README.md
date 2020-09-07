@@ -124,7 +124,7 @@ If you want the response to include stats, you need to pass the `stats: true`. R
 ```
 [
     {
-        Filename: String,
+        name: String,
         birthtime: Date,
         mtime: Date,
         atime: Date,
