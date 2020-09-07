@@ -108,11 +108,32 @@ smb2Client.mkdir('path\\to\\the\\directory', function(err) {
 });
 ```
 
-> `smb2Client.readdir ( path, callback )`
+> `smb2Client.readdir ( path, [options], callback )`
+
+- `path` String
+- `options` Object
+  - `encoding` String | Null default = null
+- `callback` Function
 
 Asynchronous `readdir(3)`: reads the contents of a directory.
 
 The result is an array of the names of the files in the directory excluding `'.'` and `'..'`.
+
+If you want the response to include stats, you need to pass the `stats: true`. Response will be an Array of this form:
+
+```
+[
+    {
+        Filename: String,
+        birthtime: Date,
+        mtime: Date,
+        atime: Date,
+        ctime: Date,
+        isDirectory(): boolean
+    },
+...
+]
+```
 
 Example:
 
@@ -121,6 +142,25 @@ smb2Client.readdir('Windows\\System32', function(err, files) {
   if (err) throw err;
   console.log(files);
 });
+```
+
+> `smb2Client.stat ( path, callback )`
+
+- `path` String
+- `callback` Function
+
+Asynchronous `stat`: query stats of a directory or file.
+
+Response will be an object with the following structure :
+
+```
+{
+    birthtime: Date,
+    mtime: Date,
+    atime: Date,
+    ctime: Date,
+    isDirectory(): boolean
+}
 ```
 
 > `smb2Client.readFile ( path, [options], callback )`
