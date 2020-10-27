@@ -34,6 +34,7 @@ interface SMB2Writable extends Writable {}
 
 declare class SMB2 {
   constructor(options: ISMB2Options);
+  disconnect(): void;
   exists(path: string): Promise<boolean>;
   exists(path: string, cb: (err?: Error, exists?: boolean) => void): void;
 
