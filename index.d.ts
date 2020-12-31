@@ -32,6 +32,27 @@ interface SMB2Readable extends Readable {
 
 interface SMB2Writable extends Writable {}
 
+interface IEncodingOption {
+  encoding?: string | null;
+}
+
+interface IStatsOption {
+  stats: true;
+}
+
+interface IStats {
+  name: string,
+  birthtime: Date,
+  mtime: Date,
+  atime: Date,
+  ctime: Date,
+  isDirectory(): boolean
+}
+
+interface IFileStats extends IStats {
+  name: string,
+}
+
 declare class SMB2 {
   constructor(options: ISMB2Options);
   disconnect(): void;
@@ -42,21 +63,36 @@ declare class SMB2 {
   mkdir(path: string, mode: number, cb: (err?: Error) => void): void;
   mkdir(path: string, cb: (err?: Error) => void): void;
 
-  readdir(path: string): Promise<string[]>;
+  readdir(path: string, options?: IEncodingOption): Promise<string[]>;
+  readdir(path: string, options: IEncodingOption & IStatsOption): Promise<IFileStats[]>;
   readdir(path: string, cb: (err?: Error, files?: string[]) => void): void;
+  readdir(path: string, options: IEncodingOption, cb: (err?: Error, files?: string[]) => void): void;
+  readdir(path: string, options: IEncodingOption & IStatsOption, cb: (err?: Error, files?: IFileStats[]) => void): void;
+
+  stat(path: string): Promise<IStats>;
+  stat(path: string, cb: (err?: Error, stats?: IStats) => void): void;
 
   readFile(
     path: string,
-    options?: { encoding: string | null }
-  ): Promise<Buffer | string>;
+    options?: { encoding?: null }
+  ): Promise<Buffer>;
   readFile(
     path: string,
-    cb: (err?: Error, content?: Buffer | string) => void
+    options: { encoding: string }
+  ): Promise<string>;
+  readFile(
+    path: string,
+    cb: (err?: Error, content?: Buffer) => void
   ): void;
   readFile(
     path: string,
-    options: { encoding: string | null },
-    cb: (err?: Error, content?: Buffer | string) => void
+    options: { encoding?: null },
+    cb: (err?: Error, content?: Buffer) => void
+  ): void;
+  readFile(
+    path: string,
+    options: { encoding: string },
+    cb: (err?: Error, content?: string) => void
   ): void;
 
   rename(
@@ -81,7 +117,7 @@ declare class SMB2 {
   writeFile(
     path: string,
     data: string | Buffer,
-    options?: { encoding: string | null }
+    options?: IEncodingOption
   ): Promise<void>;
   writeFile(
     path: string,
@@ -91,7 +127,7 @@ declare class SMB2 {
   writeFile(
     path: string,
     data: string | Buffer,
-    options: { encoding: string | null },
+    options: IEncodingOption,
     cb: (err?: Error) => void
   ): void;
 
